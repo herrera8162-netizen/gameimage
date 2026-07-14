@@ -50,6 +50,7 @@ enum class Platform
 	RPCS3,
 	DOLPHIN,
 	MELONDS,
+	AZAHAR,
 }; // enum class Platform }}}
 
 // enum class Op {{{

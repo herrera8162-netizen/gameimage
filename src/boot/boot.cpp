@@ -260,6 +260,23 @@ void boot_melonds(ns_db::ns_project::Project& db_project, fs::path const& path_d
     .wait();
 } // boot_melonds() }}}
 
+// boot_azahar() {{{
+void boot_azahar(ns_db::ns_project::Project& db_project, fs::path const& path_dir_self)
+{
+  // 3DS system files (boot9.bin/boot11.bin/seeddb.bin) go in the data dir's
+  // "sysdata" subdirectory, not the config dir - confirmed empirically
+  // (azahar's config dir only holds qt-config.ini; sysdata lives under
+  // ~/.local/share/azahar-emu, the Citra-lineage convention)
+  db_files_copy(db_project, ns_enum::Op::BIOS, path_dir_self, (get_xdg_data_home() / "azahar-emu/sysdata"));
+
+  // Start application
+  std::ignore = ns_subprocess::Subprocess(ns_env::get_or_throw("FIM_BINARY_AZAHAR"))
+    .with_piped_outputs()
+    .with_args(path_dir_self / db_project.path_file_rom)
+    .spawn()
+    .wait();
+} // boot_azahar() }}}
+
 // boot_rpcs3() {{{
 void boot_rpcs3(ns_db::ns_project::Project& db_project, fs::path const& path_dir_self)
 {
@@ -314,6 +331,7 @@ void boot(int argc, char** argv)
     case ns_enum::Platform::RPCS3    : boot_rpcs3(*db_project, path_dir_self)     ; break;
     case ns_enum::Platform::DOLPHIN  : boot_dolphin(*db_project, path_dir_self)   ; break;
     case ns_enum::Platform::MELONDS  : boot_melonds(*db_project, path_dir_self)   ; break;
+    case ns_enum::Platform::AZAHAR   : boot_azahar(*db_project, path_dir_self)    ; break;
   } // switch
 } // function: boot }}}
 

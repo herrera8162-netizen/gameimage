@@ -16,6 +16,7 @@ pub enum Platform
   Rcps3,
   Dolphin,
   Melonds,
+  Azahar,
 } // }}}
 
 // impl Platform {{{
@@ -32,6 +33,7 @@ impl Platform
       Platform::Rcps3     => "rpcs3",
       Platform::Dolphin   => "dolphin",
       Platform::Melonds   => "melonds",
+      Platform::Azahar    => "azahar",
     } // match
   } // as_str
 
@@ -46,6 +48,7 @@ impl Platform
       "rpcs3"     => Some(Platform::Rcps3),
       "dolphin"   => Some(Platform::Dolphin),
       "melonds"   => Some(Platform::Melonds),
+      "azahar"    => Some(Platform::Azahar),
       _           => None,
     } // match
   } // as_str
@@ -109,6 +112,13 @@ pub enum Msg
   DrawMelondsBios,
   DrawMelondsTest,
   DrawMelondsCompress,
+
+  DrawAzaharName,
+  DrawAzaharIcon,
+  DrawAzaharRom,
+  DrawAzaharBios,
+  DrawAzaharTest,
+  DrawAzaharCompress,
 
   DrawFinish,
 

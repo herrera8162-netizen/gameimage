@@ -26,6 +26,7 @@ pub enum Platform
   RPCS3,
   DOLPHIN,
   MELONDS,
+  AZAHAR,
 } // Platform
 
 // impl Platform {{{
@@ -42,6 +43,7 @@ impl Platform
       Platform::RPCS3     => "rpcs3",
       Platform::DOLPHIN   => "dolphin",
       Platform::MELONDS   => "melonds",
+      Platform::AZAHAR    => "azahar",
     } // match
   } // as_str
 
@@ -56,6 +58,7 @@ impl Platform
       "rpcs3"     => Ok(Platform::RPCS3),
       "dolphin"   => Ok(Platform::DOLPHIN),
       "melonds"   => Ok(Platform::MELONDS),
+      "azahar"    => Ok(Platform::AZAHAR),
       &_ => Err(ah!("Could not determine platform with string")),
     } // match
   } // as_str

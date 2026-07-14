@@ -81,6 +81,14 @@ inline void by_op(ns_enum::Platform enum_platform
       });
     } // case
     break;
+    case ns_enum::Platform::AZAHAR:
+    {
+      "Only rom and bios options are available for azahar"_throw_if([&]
+      {
+        return op != Op::ROM && op != Op::BIOS;
+      });
+    } // case
+    break;
   } // switch
 
   // Check if is regular file or directory

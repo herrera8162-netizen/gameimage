@@ -172,6 +172,13 @@ fn redraw(&mut self, msg : Msg)
     Msg::DrawMelondsBios => wizard::melonds::bios(self.tx, "Install the Bios/Firmware File(s) (optional)"),
     Msg::DrawMelondsTest => wizard::melonds::test(self.tx, "Test the Created Package"),
     Msg::DrawMelondsCompress => wizard::melonds::compress(self.tx, "Compress the Created Package"),
+    // Azahar
+    Msg::DrawAzaharName => wizard::azahar::name(self.tx, "Select the Application Name"),
+    Msg::DrawAzaharIcon => wizard::azahar::icon(self.tx, "Select the Application Icon"),
+    Msg::DrawAzaharRom => wizard::azahar::rom(self.tx, "Install the Rom File(s)"),
+    Msg::DrawAzaharBios => wizard::azahar::bios(self.tx, "Install the Firmware File(s)"),
+    Msg::DrawAzaharTest => wizard::azahar::test(self.tx, "Test the Created Package"),
+    Msg::DrawAzaharCompress => wizard::azahar::compress(self.tx, "Compress the Created Package"),
     // Quit
     Msg::Quit =>
     {

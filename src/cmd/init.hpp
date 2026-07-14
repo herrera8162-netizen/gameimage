@@ -86,6 +86,7 @@ inline void project(std::string const& str_name, ns_enum::Platform const& platfo
     case ns_enum::Platform::RPCS3:
     case ns_enum::Platform::DOLPHIN:
     case ns_enum::Platform::MELONDS:
+    case ns_enum::Platform::AZAHAR:
     {
       fs::path path_file_env = path_dir_project / "gameimage.env.json";
       std::string str_var_name = "FIM_BINARY_{}"_fmt(ns_enum::to_string(platform));

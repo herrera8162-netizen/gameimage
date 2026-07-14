@@ -31,6 +31,8 @@ pub struct Entry
   pub dolphin: EntryEmulator,
   #[serde(default)]
   pub melonds: EntryEmulator,
+  #[serde(default)]
+  pub azahar: EntryEmulator,
 } // Entry }}}
 
 // read() {{{

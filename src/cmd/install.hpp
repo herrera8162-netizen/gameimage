@@ -311,7 +311,8 @@ inline void install(Op op, std::vector<std::string> args)
     case ns_enum::Platform::PCSX2:
     case ns_enum::Platform::RPCS3:
     case ns_enum::Platform::DOLPHIN:
-    case ns_enum::Platform::MELONDS: ns_install::emulator(db_build->path_file_image, db_metadata, op, args);
+    case ns_enum::Platform::MELONDS:
+    case ns_enum::Platform::AZAHAR: ns_install::emulator(db_build->path_file_image, db_metadata, op, args);
     break;
   } // switch
 

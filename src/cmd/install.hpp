@@ -229,9 +229,10 @@ inline void emulator(fs::path const& path_file_image
   {
     case Op::GUI:
     {
+      std::string path_boot = "/opt/{}/boot"_fmt(ns_enum::to_string_lower(db_metadata.platform));
       std::ignore = ns_subprocess::Subprocess("/fim/static/fim_portal")
         .with_piped_outputs()
-        .with_args(path_file_image, "fim-exec", "/opt/rpcs3/boot")
+        .with_args(path_file_image, "fim-exec", path_boot)
         .spawn()
         .wait();
     }
@@ -308,7 +309,8 @@ inline void install(Op op, std::vector<std::string> args)
     break;
     case ns_enum::Platform::RETROARCH:
     case ns_enum::Platform::PCSX2:
-    case ns_enum::Platform::RPCS3: ns_install::emulator(db_build->path_file_image, db_metadata, op, args);
+    case ns_enum::Platform::RPCS3:
+    case ns_enum::Platform::DOLPHIN: ns_install::emulator(db_build->path_file_image, db_metadata, op, args);
     break;
   } // switch
 

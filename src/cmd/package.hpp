@@ -58,6 +58,11 @@ inline void package_config(fs::path const& path_dir_home_src
   {
     f_copy_recursive(path_dir_home_src / ".config/retroarch", path_dir_home_dst / ".config/retroarch");
   } // if
+
+  if ( set_platforms.contains(ns_enum::Platform::DOLPHIN) )
+  {
+    f_copy_recursive(path_dir_home_src / ".config/dolphin-emu", path_dir_home_dst / ".config/dolphin-emu");
+  } // if
 } // package_config() }}}
 
 // package_platforms() {{{

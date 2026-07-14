@@ -76,6 +76,28 @@ inline void project(std::string const& str_name, ns_enum::Platform const& platfo
   ns_log::write('i', "Copy ", *path_file_boot, " -> ", path_dir_project / "boot");
   // Create project database
   elogerror(ns_db::ns_project::init(path_dir_project, platform));
+  // Set FIM_BINARY_<PLATFORM> so boot.cpp can find the emulator binary at runtime
+  // (nothing else in the codebase currently writes this; layers mount their binary's
+  // boot wrapper at /opt/<platform>/boot by build-arch.sh convention)
+  switch(platform)
+  {
+    case ns_enum::Platform::RETROARCH:
+    case ns_enum::Platform::PCSX2:
+    case ns_enum::Platform::RPCS3:
+    case ns_enum::Platform::DOLPHIN:
+    {
+      fs::path path_file_env = path_dir_project / "gameimage.env.json";
+      std::string str_var_name = "FIM_BINARY_{}"_fmt(ns_enum::to_string(platform));
+      std::string str_var_value = "/opt/{}/boot"_fmt(ns_enum::to_string_lower(platform));
+      std::ignore = ns_db::from_file(path_file_env, [&](auto&& db)
+      {
+        db(str_var_name) = str_var_value;
+      }, fs::exists(path_file_env)? ns_db::Mode::UPDATE : ns_db::Mode::CREATE);
+      ns_log::write('i', "Set '", str_var_name, "' to '", str_var_value, "' in ", path_file_env);
+    } // case
+    break;
+    default: break;
+  } // switch
 } // function: project }}}
 
 } // namespace ns_init

@@ -48,6 +48,7 @@ enum class Platform
 	RETROARCH,
 	PCSX2,
 	RPCS3,
+	DOLPHIN,
 }; // enum class Platform }}}
 
 // enum class Op {{{

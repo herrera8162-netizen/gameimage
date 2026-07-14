@@ -23,6 +23,7 @@ if(NOT GIT_COMMAND)
 endif()
 
 # External libraries
+set(Boost_USE_STATIC_LIBS ON)
 find_package(fmt REQUIRED)
 find_package(cpr REQUIRED)
 find_package(argparse REQUIRED)
@@ -53,7 +54,7 @@ target_link_libraries(main PRIVATE
   easyloggingpp::easyloggingpp
   libjpeg-turbo::libjpeg-turbo
   PNG::PNG
-  /usr/lib/libboost_filesystem.a
+  Boost::filesystem
   ZLIB::ZLIB
   cppcoro::cppcoro
   libzippp::libzippp
@@ -74,7 +75,7 @@ target_link_libraries(boot PRIVATE
   easyloggingpp::easyloggingpp
   libjpeg-turbo::libjpeg-turbo
   PNG::PNG
-  /usr/lib/libboost_filesystem.a
+  Boost::filesystem
   ZLIB::ZLIB
   cppcoro::cppcoro
 )

@@ -41,6 +41,7 @@ struct Retroarch : public Platform {};
 struct Pcsx2     : public Platform {};
 struct Rpcs3     : public Platform {};
 struct Wine      : public Platform {};
+struct Dolphin   : public Platform {};
 // platforms() }}}
 
 // class Fetch {{{
@@ -52,6 +53,7 @@ class Fetch
     std::unique_ptr<Pcsx2> m_pcsx2 = std::make_unique<Pcsx2>();
     std::unique_ptr<Rpcs3> m_rpcs3 = std::make_unique<Rpcs3>();
     std::unique_ptr<Wine> m_wine = std::make_unique<Wine>();
+    std::unique_ptr<Dolphin> m_dolphin = std::make_unique<Dolphin>();
     std::string m_version;
     Fetch() = default;
   public:
@@ -64,6 +66,7 @@ class Fetch
         case ns_enum::Platform::PCSX2     : return std::make_unique<Platform>(*m_pcsx2);
         case ns_enum::Platform::RPCS3     : return std::make_unique<Platform>(*m_rpcs3);
         case ns_enum::Platform::WINE      : return std::make_unique<Platform>(*m_wine);
+        case ns_enum::Platform::DOLPHIN   : return std::make_unique<Platform>(*m_dolphin);
       } // switch
       throw std::runtime_error("Unknown platform");
     } // get_platform
@@ -83,6 +86,11 @@ inline std::expected<Fetch, std::string> read_impl(fs::path const& path_file_db)
     fetch.m_pcsx2->m_url_layer["default"] = ehope(db.template value<std::string>("pcsx2", "layer"));
     // Rpcs3
     fetch.m_rpcs3->m_url_layer["default"] = ehope(db.template value<std::string>("rpcs3", "layer"));
+    // Dolphin (tolerate absence: manifests predating dolphin support lack this key)
+    if (auto value = db.template value<std::string>("dolphin", "layer"))
+    {
+      fetch.m_dolphin->m_url_layer["default"] = *value;
+    } // if
     // Wine
     auto layers = ehope(db.value("wine", "layer"));
     for(auto const& key : layers.keys())

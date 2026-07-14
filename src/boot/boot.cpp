@@ -235,6 +235,16 @@ void boot_pcsx2(ns_db::ns_project::Project& db_project, fs::path const& path_dir
     .wait();
 } // boot_pcsx2() }}}
 
+// boot_dolphin() {{{
+void boot_dolphin(ns_db::ns_project::Project& db_project, fs::path const& path_dir_self)
+{
+  std::ignore = ns_subprocess::Subprocess(ns_env::get_or_throw("FIM_BINARY_DOLPHIN"))
+    .with_piped_outputs()
+    .with_args("-b", "-e", path_dir_self / db_project.path_file_rom)
+    .spawn()
+    .wait();
+} // boot_dolphin() }}}
+
 // boot_rpcs3() {{{
 void boot_rpcs3(ns_db::ns_project::Project& db_project, fs::path const& path_dir_self)
 {
@@ -287,6 +297,7 @@ void boot(int argc, char** argv)
     case ns_enum::Platform::RETROARCH: boot_retroarch(*db_project, path_dir_self) ; break;
     case ns_enum::Platform::PCSX2    : boot_pcsx2(*db_project, path_dir_self)     ; break;
     case ns_enum::Platform::RPCS3    : boot_rpcs3(*db_project, path_dir_self)     ; break;
+    case ns_enum::Platform::DOLPHIN  : boot_dolphin(*db_project, path_dir_self)   ; break;
   } // switch
 } // function: boot }}}
 

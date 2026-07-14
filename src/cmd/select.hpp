@@ -67,6 +67,11 @@ inline void by_op(ns_enum::Platform enum_platform
       });
     } // case
     break;
+    case ns_enum::Platform::DOLPHIN:
+    {
+      "Only the rom option is available for dolphin"_throw_if([&]{ return op != Op::ROM; });
+    } // case
+    break;
   } // switch
 
   // Check if is regular file or directory

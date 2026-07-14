@@ -10,3 +10,4 @@ pub mod rpcs3;
 pub mod dolphin;
 pub mod melonds;
 pub mod azahar;
+pub mod cemu;

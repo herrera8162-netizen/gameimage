@@ -89,6 +89,15 @@ inline void by_op(ns_enum::Platform enum_platform
       });
     } // case
     break;
+    case ns_enum::Platform::CEMU:
+    {
+      // Keys are optional (only needed for encrypted DLC/update content)
+      "Only rom and keys options are available for cemu"_throw_if([&]
+      {
+        return op != Op::ROM && op != Op::KEYS;
+      });
+    } // case
+    break;
   } // switch
 
   // Check if is regular file or directory
@@ -108,6 +117,7 @@ inline void by_op(ns_enum::Platform enum_platform
     case ns_enum::Op::ROM: db_project->path_file_rom = path_file_target; break;
     case ns_enum::Op::BIOS: db_project->path_file_bios = path_file_target; break;
     case ns_enum::Op::CORE: db_project->path_file_core = path_file_target; break;
+    case ns_enum::Op::KEYS: db_project->path_file_keys = path_file_target; break;
     default: throw std::runtime_error("Cannot set default for '{}'"_fmt(ns_enum::to_string(op)));
   } // switch
   ns_db::ns_project::write(*db_project);

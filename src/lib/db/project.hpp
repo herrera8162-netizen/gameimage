@@ -38,9 +38,11 @@ class Project
     fs::path path_file_core;
     fs::path path_file_icon;
     fs::path path_file_rom;
+    fs::path path_file_keys;
     std::vector<fs::path> paths_file_bios;
     std::vector<fs::path> paths_file_core;
     std::vector<fs::path> paths_file_rom;
+    std::vector<fs::path> paths_file_keys;
     void set_default(ns_enum::Op const op, fs::path const& rpath_file_target);
     void append(ns_enum::Op const op, fs::path const& rpath_file_target);
     void erase(ns_enum::Op const op, fs::path const& rpath_file_target);
@@ -61,6 +63,7 @@ void Project::set_default(ns_enum::Op const op, fs::path const& rpath_file_targe
     case ns_enum::Op::BIOS: path_file_bios = rpath_file_target; break;
     case ns_enum::Op::CORE: path_file_core = rpath_file_target; break;
     case ns_enum::Op::ROM: path_file_rom = rpath_file_target; break;
+    case ns_enum::Op::KEYS: path_file_keys = rpath_file_target; break;
     default: throw std::runtime_error("Invalid item to make default");
   } // switch
 } // set_default() }}}
@@ -75,6 +78,7 @@ void Project::append(ns_enum::Op const op, fs::path const& rpath_file_target)
     case ns_enum::Op::BIOS: paths_file_bios.push_back(rpath_file_target); break;
     case ns_enum::Op::CORE: paths_file_core.push_back(rpath_file_target); break;
     case ns_enum::Op::ROM: paths_file_rom.push_back(rpath_file_target); break;
+    case ns_enum::Op::KEYS: paths_file_keys.push_back(rpath_file_target); break;
     default: throw std::runtime_error("Invalid item to append");
   } // switch
 } // append() }}}
@@ -97,6 +101,10 @@ void Project::erase(ns_enum::Op const op, fs::path const& rpath_file_target)
     case ns_enum::Op::ROM:
       if( rpath_file_target == path_file_rom ) { path_file_rom = ""; }
       std::erase_if(paths_file_rom, [&](auto&& e){ return e == rpath_file_target; });
+      break;
+    case ns_enum::Op::KEYS:
+      if( rpath_file_target == path_file_keys ) { path_file_keys = ""; }
+      std::erase_if(paths_file_keys, [&](auto&& e){ return e == rpath_file_target; });
       break;
     case ns_enum::Op::ICON:
       if( rpath_file_target == path_file_icon ) { path_file_icon = ""; }
@@ -129,6 +137,7 @@ fs::path Project::find_file(ns_enum::Op const op)
     case ns_enum::Op::BIOS: return path_file_bios; break;
     case ns_enum::Op::CORE: return path_file_core; break;
     case ns_enum::Op::ROM: return path_file_rom; break;
+    case ns_enum::Op::KEYS: return path_file_keys; break;
     case ns_enum::Op::ICON: return path_file_icon; break;
     default: throw std::runtime_error("Invalid item to get directory for");
   } // switch
@@ -142,6 +151,7 @@ std::vector<fs::path> const& Project::find_files(ns_enum::Op const op)
     case ns_enum::Op::BIOS: return paths_file_bios; break;
     case ns_enum::Op::CORE: return paths_file_core; break;
     case ns_enum::Op::ROM: return paths_file_rom; break;
+    case ns_enum::Op::KEYS: return paths_file_keys; break;
     default: throw std::runtime_error("Invalid item to get directory for");
   } // switch
 } // find_file() }}}
@@ -195,9 +205,11 @@ void init_impl(fs::path const& path_dir_project, ns_enum::Platform const& platfo
     db_project("path_file_core")  = db_project.template value_or_default<std::string>("path_file_core");
     db_project("path_file_icon")  = db_project.template value_or_default<std::string>("path_file_icon");
     db_project("path_file_rom")   = db_project.template value_or_default<std::string>("path_file_rom");
+    db_project("path_file_keys")  = db_project.template value_or_default<std::string>("path_file_keys");
     db_project("paths_file_bios") = db_project.template value_or_default<std::vector<fs::path>>("paths_file_bios");
     db_project("paths_file_core") = db_project.template value_or_default<std::vector<fs::path>>("paths_file_bios");
     db_project("paths_file_rom")  = db_project.template value_or_default<std::vector<fs::path>>("paths_file_bios");
+    db_project("paths_file_keys") = db_project.template value_or_default<std::vector<fs::path>>("paths_file_keys");
   }
   , fs::exists(path_file_database)? ns_db::Mode::UPDATE : ns_db::Mode::CREATE);
 } // init_impl() }}}
@@ -221,9 +233,11 @@ Project read_impl(fs::path path_file_db)
     project.path_file_core  = db.template value_or_default<fs::path>("path_file_core");
     project.path_file_icon  = db.template value_or_default<fs::path>("path_file_icon");
     project.path_file_rom   = db.template value_or_default<fs::path>("path_file_rom");
+    project.path_file_keys  = db.template value_or_default<fs::path>("path_file_keys");
     project.paths_file_bios = db.template value_or_default<std::vector<fs::path>>("paths_file_bios");
     project.paths_file_core = db.template value_or_default<std::vector<fs::path>>("paths_file_core");
     project.paths_file_rom  = db.template value_or_default<std::vector<fs::path>>("paths_file_rom");
+    project.paths_file_keys = db.template value_or_default<std::vector<fs::path>>("paths_file_keys");
   }, ns_db::Mode::READ);
   return project;
 } // read_impl() }}}
@@ -246,9 +260,11 @@ void write_impl(Project const& project)
     db("path_file_core")  = project.path_file_core;
     db("path_file_icon")  = project.path_file_icon;
     db("path_file_rom")   = project.path_file_rom;
+    db("path_file_keys")  = project.path_file_keys;
     db("paths_file_bios") = project.paths_file_bios;
     db("paths_file_core") = project.paths_file_core;
     db("paths_file_rom")  = project.paths_file_rom;
+    db("paths_file_keys") = project.paths_file_keys;
   }, ns_db::Mode::CREATE);
 } // write_impl() }}}
 

@@ -73,6 +73,11 @@ inline void package_config(fs::path const& path_dir_home_src
   {
     f_copy_recursive(path_dir_home_src / ".config/azahar-emu", path_dir_home_dst / ".config/azahar-emu");
   } // if
+
+  if ( set_platforms.contains(ns_enum::Platform::CEMU) )
+  {
+    f_copy_recursive(path_dir_home_src / ".config/Cemu", path_dir_home_dst / ".config/Cemu");
+  } // if
 } // package_config() }}}
 
 // package_platforms() {{{

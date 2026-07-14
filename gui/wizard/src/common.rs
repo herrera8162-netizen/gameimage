@@ -17,6 +17,7 @@ pub enum Platform
   Dolphin,
   Melonds,
   Azahar,
+  Cemu,
 } // }}}
 
 // impl Platform {{{
@@ -34,6 +35,7 @@ impl Platform
       Platform::Dolphin   => "dolphin",
       Platform::Melonds   => "melonds",
       Platform::Azahar    => "azahar",
+      Platform::Cemu      => "cemu",
     } // match
   } // as_str
 
@@ -49,6 +51,7 @@ impl Platform
       "dolphin"   => Some(Platform::Dolphin),
       "melonds"   => Some(Platform::Melonds),
       "azahar"    => Some(Platform::Azahar),
+      "cemu"      => Some(Platform::Cemu),
       _           => None,
     } // match
   } // as_str
@@ -119,6 +122,13 @@ pub enum Msg
   DrawAzaharBios,
   DrawAzaharTest,
   DrawAzaharCompress,
+
+  DrawCemuName,
+  DrawCemuIcon,
+  DrawCemuRom,
+  DrawCemuKeys,
+  DrawCemuTest,
+  DrawCemuCompress,
 
   DrawFinish,
 

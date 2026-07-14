@@ -33,6 +33,7 @@ pub static HASH_PLATFORM_MSG: LazyLock<HashMap<common::Platform, common::Msg>> =
   m.insert(common::Platform::Dolphin, common::Msg::DrawDolphinName);
   m.insert(common::Platform::Melonds, common::Msg::DrawMelondsName);
   m.insert(common::Platform::Azahar, common::Msg::DrawAzaharName);
+  m.insert(common::Platform::Cemu, common::Msg::DrawCemuName);
   m
 });
 
@@ -47,6 +48,7 @@ pub static HASH_PLATFORM_DESCR: LazyLock<HashMap<&'static str, &'static str>> =L
   m.insert("dolphin", " Dolphin - Play gamecube and wii games");
   m.insert("melonds", " MelonDS - Play nintendo ds games");
   m.insert("azahar", " Azahar - Play nintendo 3ds games");
+  m.insert("cemu", " Cemu - Play wii u games");
   m
 });
 
@@ -217,6 +219,7 @@ fn platform_list(tx: Sender<common::Msg>, widget: &fltk::group::Flex) -> anyhow:
   let row_dolphin   = platform_add(tx, common::Platform::Dolphin, vec_platforms.contains(&common::Platform::Dolphin));
   let row_melonds   = platform_add(tx, common::Platform::Melonds, vec_platforms.contains(&common::Platform::Melonds));
   let row_azahar    = platform_add(tx, common::Platform::Azahar, vec_platforms.contains(&common::Platform::Azahar));
+  let row_cemu      = platform_add(tx, common::Platform::Cemu, vec_platforms.contains(&common::Platform::Cemu));
   let row_wine      = platform_add_wine(tx, &db_fetch.wine.layer, vec_platforms.contains(&common::Platform::Wine));
   col.fixed(&row_linux, dimm::height_button_wide());
   col.fixed(&row_rpcs3, dimm::height_button_wide());
@@ -225,6 +228,7 @@ fn platform_list(tx: Sender<common::Msg>, widget: &fltk::group::Flex) -> anyhow:
   col.fixed(&row_dolphin, dimm::height_button_wide());
   col.fixed(&row_melonds, dimm::height_button_wide());
   col.fixed(&row_azahar, dimm::height_button_wide());
+  col.fixed(&row_cemu, dimm::height_button_wide());
   col.fixed(&row_wine, dimm::height_button_wide()*2 + dimm::border());
   if ! vec_platforms.contains(&common::Platform::Linux)
   {
@@ -234,6 +238,7 @@ fn platform_list(tx: Sender<common::Msg>, widget: &fltk::group::Flex) -> anyhow:
     shared::fltk::set_active(row_dolphin, false);
     shared::fltk::set_active(row_melonds, false);
     shared::fltk::set_active(row_azahar, false);
+    shared::fltk::set_active(row_cemu, false);
     shared::fltk::set_active(row_wine, false);
   } // if
   col.end();

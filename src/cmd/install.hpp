@@ -140,8 +140,6 @@ inline void linux(fs::path const& path_file_image
 // emulator_install_file() {{{
 void emulator_install_file(ns_db::ns_build::Metadata& db_metadata, Op const& op, fs::path path_file_src, fs::path const& path_file_dst)
 {
-  ereturn_if( op == Op::KEYS, "No platform uses 'keys'");
-
   // Path to project
   ns_log::write('i', "Copy ", path_file_src, " to ", path_file_dst);
 
@@ -205,6 +203,7 @@ inline void emulator(fs::path const& path_file_image
   fs::path path_dir_rom    = db_metadata.path_dir_project / db_project->path_dir_rom;
   fs::path path_dir_core   = db_metadata.path_dir_project / db_project->path_dir_core;
   fs::path path_dir_bios   = db_metadata.path_dir_project / db_project->path_dir_bios;
+  fs::path path_dir_keys   = db_metadata.path_dir_project / db_project->path_dir_keys;
 
   // Log
   ns_log::write('i', "application   : ", db_metadata.name);
@@ -212,6 +211,7 @@ inline void emulator(fs::path const& path_file_image
   ns_log::write('i', "path core     : ", path_dir_core);
   ns_log::write('i', "path rom      : ", path_dir_rom);
   ns_log::write('i', "path bios     : ", path_dir_bios);
+  ns_log::write('i', "path keys     : ", path_dir_keys);
 
   // Install helpers
   auto f_install_files = [&](Op const& op, fs::path path_dir_dst, std::vector<std::string> const& args)
@@ -238,6 +238,7 @@ inline void emulator(fs::path const& path_file_image
     }
     break;
     case Op::BIOS: { f_install_files(op, path_dir_bios, args); } break;
+    case Op::KEYS: { f_install_files(op, path_dir_keys, args); } break;
     case Op::ROM : { f_install_files(op, path_dir_rom , args); } break;
     case Op::CORE: { f_install_files(op, path_dir_core, args); } break;
     default: "Invalid op in emulator install"_throw(); break;
@@ -312,7 +313,8 @@ inline void install(Op op, std::vector<std::string> args)
     case ns_enum::Platform::RPCS3:
     case ns_enum::Platform::DOLPHIN:
     case ns_enum::Platform::MELONDS:
-    case ns_enum::Platform::AZAHAR: ns_install::emulator(db_build->path_file_image, db_metadata, op, args);
+    case ns_enum::Platform::AZAHAR:
+    case ns_enum::Platform::CEMU: ns_install::emulator(db_build->path_file_image, db_metadata, op, args);
     break;
   } // switch
 

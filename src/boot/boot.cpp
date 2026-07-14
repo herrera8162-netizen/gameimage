@@ -277,6 +277,25 @@ void boot_azahar(ns_db::ns_project::Project& db_project, fs::path const& path_di
     .wait();
 } // boot_azahar() }}}
 
+// boot_cemu() {{{
+void boot_cemu(ns_db::ns_project::Project& db_project, fs::path const& path_dir_self)
+{
+  // keys.txt (title keys for DLC/update decryption) is looked up via
+  // ActiveSettings::GetUserDataPath(), the same base Cemu uses for its mlc01
+  // folder - i.e. the data dir, not the config dir (confirmed via source and
+  // empirically: ~/.local/share/Cemu is real and used, unlike ~/.config/Cemu
+  // which only holds UI settings/controller profiles)
+  db_files_copy(db_project, ns_enum::Op::KEYS, path_dir_self, get_xdg_data_home() / "Cemu");
+
+  // Start application; Cemu has no bare-positional-arg or headless mode,
+  // unlike every other emulator here - it requires -g/--game explicitly
+  std::ignore = ns_subprocess::Subprocess(ns_env::get_or_throw("FIM_BINARY_CEMU"))
+    .with_piped_outputs()
+    .with_args("-g", path_dir_self / db_project.path_file_rom)
+    .spawn()
+    .wait();
+} // boot_cemu() }}}
+
 // boot_rpcs3() {{{
 void boot_rpcs3(ns_db::ns_project::Project& db_project, fs::path const& path_dir_self)
 {
@@ -332,6 +351,7 @@ void boot(int argc, char** argv)
     case ns_enum::Platform::DOLPHIN  : boot_dolphin(*db_project, path_dir_self)   ; break;
     case ns_enum::Platform::MELONDS  : boot_melonds(*db_project, path_dir_self)   ; break;
     case ns_enum::Platform::AZAHAR   : boot_azahar(*db_project, path_dir_self)    ; break;
+    case ns_enum::Platform::CEMU     : boot_cemu(*db_project, path_dir_self)      ; break;
   } // switch
 } // function: boot }}}
 

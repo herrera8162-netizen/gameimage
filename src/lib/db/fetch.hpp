@@ -44,6 +44,7 @@ struct Wine      : public Platform {};
 struct Dolphin   : public Platform {};
 struct Melonds   : public Platform {};
 struct Azahar    : public Platform {};
+struct Cemu      : public Platform {};
 // platforms() }}}
 
 // class Fetch {{{
@@ -58,6 +59,7 @@ class Fetch
     std::unique_ptr<Dolphin> m_dolphin = std::make_unique<Dolphin>();
     std::unique_ptr<Melonds> m_melonds = std::make_unique<Melonds>();
     std::unique_ptr<Azahar> m_azahar = std::make_unique<Azahar>();
+    std::unique_ptr<Cemu> m_cemu = std::make_unique<Cemu>();
     std::string m_version;
     Fetch() = default;
   public:
@@ -73,6 +75,7 @@ class Fetch
         case ns_enum::Platform::DOLPHIN   : return std::make_unique<Platform>(*m_dolphin);
         case ns_enum::Platform::MELONDS   : return std::make_unique<Platform>(*m_melonds);
         case ns_enum::Platform::AZAHAR    : return std::make_unique<Platform>(*m_azahar);
+        case ns_enum::Platform::CEMU      : return std::make_unique<Platform>(*m_cemu);
       } // switch
       throw std::runtime_error("Unknown platform");
     } // get_platform
@@ -106,6 +109,11 @@ inline std::expected<Fetch, std::string> read_impl(fs::path const& path_file_db)
     if (auto value = db.template value<std::string>("azahar", "layer"))
     {
       fetch.m_azahar->m_url_layer["default"] = *value;
+    } // if
+    // Cemu (tolerate absence: manifests predating cemu support lack this key)
+    if (auto value = db.template value<std::string>("cemu", "layer"))
+    {
+      fetch.m_cemu->m_url_layer["default"] = *value;
     } // if
     // Wine
     auto layers = ehope(db.value("wine", "layer"));

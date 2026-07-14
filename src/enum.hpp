@@ -51,6 +51,7 @@ enum class Platform
 	DOLPHIN,
 	MELONDS,
 	AZAHAR,
+	CEMU,
 }; // enum class Platform }}}
 
 // enum class Op {{{

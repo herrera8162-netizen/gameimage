@@ -33,6 +33,8 @@ pub struct Entry
   pub melonds: EntryEmulator,
   #[serde(default)]
   pub azahar: EntryEmulator,
+  #[serde(default)]
+  pub cemu: EntryEmulator,
 } // Entry }}}
 
 // read() {{{

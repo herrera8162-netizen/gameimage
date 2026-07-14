@@ -179,6 +179,13 @@ fn redraw(&mut self, msg : Msg)
     Msg::DrawAzaharBios => wizard::azahar::bios(self.tx, "Install the Firmware File(s)"),
     Msg::DrawAzaharTest => wizard::azahar::test(self.tx, "Test the Created Package"),
     Msg::DrawAzaharCompress => wizard::azahar::compress(self.tx, "Compress the Created Package"),
+    // Cemu
+    Msg::DrawCemuName => wizard::cemu::name(self.tx, "Select the Application Name"),
+    Msg::DrawCemuIcon => wizard::cemu::icon(self.tx, "Select the Application Icon"),
+    Msg::DrawCemuRom => wizard::cemu::rom(self.tx, "Install the Rom File(s)"),
+    Msg::DrawCemuKeys => wizard::cemu::keys(self.tx, "Install keys.txt (optional)"),
+    Msg::DrawCemuTest => wizard::cemu::test(self.tx, "Test the Created Package"),
+    Msg::DrawCemuCompress => wizard::cemu::compress(self.tx, "Compress the Created Package"),
     // Quit
     Msg::Quit =>
     {

@@ -96,8 +96,14 @@ inline void validate(ns_db::ns_build::Metadata& db_metadata, ns_db::ns_project::
     } // case
     break;
     case ns_enum::Platform::RPCS3:
+    case ns_enum::Platform::DOLPHIN:
+    case ns_enum::Platform::MELONDS:
+    case ns_enum::Platform::AZAHAR:
+    case ns_enum::Platform::CEMU:
     {
-      // default rom
+      // Only rom is mandatory - bios/keys are optional for all four of these
+      // (melonDS/Azahar/Cemu can run homebrew/decrypted content without
+      // firmware or keys; Dolphin needs neither at all)
       f_validate_file_or_directory(ns_enum::Op::ROM);
     } // case
     break;

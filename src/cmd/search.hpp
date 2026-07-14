@@ -210,6 +210,10 @@ inline void search_local(std::optional<std::string> opt_query)
     case ns_enum::Platform::RETROARCH: send(search_files(path_dir_search, R"(.*)", ""), ns_ipc::ipc()); break;
     case ns_enum::Platform::PCSX2    : send(search_files(path_dir_search, R"(.*)", ""), ns_ipc::ipc()); break;
     case ns_enum::Platform::RPCS3    : send(search_dirs(path_dir_search), ns_ipc::ipc());               break;
+    case ns_enum::Platform::DOLPHIN  : send(search_files(path_dir_search, R"(.*)", ""), ns_ipc::ipc()); break;
+    case ns_enum::Platform::MELONDS  : send(search_files(path_dir_search, R"(.*)", ""), ns_ipc::ipc()); break;
+    case ns_enum::Platform::AZAHAR   : send(search_files(path_dir_search, R"(.*)", ""), ns_ipc::ipc()); break;
+    case ns_enum::Platform::CEMU     : send(search_files(path_dir_search, R"(.*)", ""), ns_ipc::ipc()); break;
   } // switch
 
 } // search_local() }}}

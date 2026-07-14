@@ -14,6 +14,7 @@ pub enum Platform
   Retroarch,
   Pcsx2,
   Rcps3,
+  Dolphin,
 } // }}}
 
 // impl Platform {{{
@@ -28,6 +29,7 @@ impl Platform
       Platform::Retroarch => "retroarch",
       Platform::Pcsx2     => "pcsx2",
       Platform::Rcps3     => "rpcs3",
+      Platform::Dolphin   => "dolphin",
     } // match
   } // as_str
 
@@ -40,6 +42,7 @@ impl Platform
       "retroarch" => Some(Platform::Retroarch),
       "pcsx2"     => Some(Platform::Pcsx2),
       "rpcs3"     => Some(Platform::Rcps3),
+      "dolphin"   => Some(Platform::Dolphin),
       _           => None,
     } // match
   } // as_str
@@ -90,6 +93,12 @@ pub enum Msg
   DrawRpcs3Bios,
   DrawRpcs3Test,
   DrawRpcs3Compress,
+
+  DrawDolphinName,
+  DrawDolphinIcon,
+  DrawDolphinRom,
+  DrawDolphinTest,
+  DrawDolphinCompress,
 
   DrawFinish,
 

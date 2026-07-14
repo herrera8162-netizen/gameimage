@@ -30,6 +30,7 @@ pub static HASH_PLATFORM_MSG: LazyLock<HashMap<common::Platform, common::Msg>> =
   m.insert(common::Platform::Retroarch, common::Msg::DrawRetroarchName);
   m.insert(common::Platform::Pcsx2, common::Msg::DrawPcsx2Name);
   m.insert(common::Platform::Rcps3, common::Msg::DrawRpcs3Name);
+  m.insert(common::Platform::Dolphin, common::Msg::DrawDolphinName);
   m
 });
 
@@ -41,6 +42,7 @@ pub static HASH_PLATFORM_DESCR: LazyLock<HashMap<&'static str, &'static str>> =L
   m.insert("pcsx2", " Pcsx2 - Play playstation 2 games");
   m.insert("rpcs3", " Rcps3 - Play playstation 3 games");
   m.insert("retroarch", " Retroarch - Play games from retro consoles");
+  m.insert("dolphin", " Dolphin - Play gamecube and wii games");
   m
 });
 
@@ -208,17 +210,20 @@ fn platform_list(tx: Sender<common::Msg>, widget: &fltk::group::Flex) -> anyhow:
   let row_rpcs3     = platform_add(tx, common::Platform::Rcps3, vec_platforms.contains(&common::Platform::Rcps3));
   let row_retroarch = platform_add(tx, common::Platform::Retroarch, vec_platforms.contains(&common::Platform::Retroarch));
   let row_pcsx2     = platform_add(tx, common::Platform::Pcsx2, vec_platforms.contains(&common::Platform::Pcsx2));
+  let row_dolphin   = platform_add(tx, common::Platform::Dolphin, vec_platforms.contains(&common::Platform::Dolphin));
   let row_wine      = platform_add_wine(tx, &db_fetch.wine.layer, vec_platforms.contains(&common::Platform::Wine));
   col.fixed(&row_linux, dimm::height_button_wide());
   col.fixed(&row_rpcs3, dimm::height_button_wide());
   col.fixed(&row_retroarch, dimm::height_button_wide());
   col.fixed(&row_pcsx2, dimm::height_button_wide());
+  col.fixed(&row_dolphin, dimm::height_button_wide());
   col.fixed(&row_wine, dimm::height_button_wide()*2 + dimm::border());
   if ! vec_platforms.contains(&common::Platform::Linux)
   {
     shared::fltk::set_active(row_rpcs3, false);
     shared::fltk::set_active(row_retroarch, false);
     shared::fltk::set_active(row_pcsx2, false);
+    shared::fltk::set_active(row_dolphin, false);
     shared::fltk::set_active(row_wine, false);
   } // if
   col.end();

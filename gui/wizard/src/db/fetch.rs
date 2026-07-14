@@ -4,7 +4,7 @@ use std::fs::File;
 use std::path::PathBuf;
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Clone, Default, Serialize, Deserialize)]
 pub struct EntryEmulator
 {
   pub layer: String,
@@ -26,6 +26,9 @@ pub struct Entry
   pub pcsx2: EntryEmulator,
   pub retroarch: EntryEmulator,
   pub wine: EntryWine,
+  // Tolerate manifests predating dolphin support, which lack this key
+  #[serde(default)]
+  pub dolphin: EntryEmulator,
 } // Entry }}}
 
 // read() {{{

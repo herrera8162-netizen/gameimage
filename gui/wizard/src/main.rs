@@ -159,6 +159,12 @@ fn redraw(&mut self, msg : Msg)
     Msg::DrawRpcs3Bios => wizard::rpcs3::bios(self.tx, "Install the Bios and DLC Files"),
     Msg::DrawRpcs3Test => wizard::rpcs3::test(self.tx, "Test the Created Package"),
     Msg::DrawRpcs3Compress => wizard::rpcs3::compress(self.tx, "Compress the Created Package"),
+    // Dolphin
+    Msg::DrawDolphinName => wizard::dolphin::name(self.tx, "Select the Application Name"),
+    Msg::DrawDolphinIcon => wizard::dolphin::icon(self.tx, "Select the Application Icon"),
+    Msg::DrawDolphinRom => wizard::dolphin::rom(self.tx, "Install the Rom File(s)"),
+    Msg::DrawDolphinTest => wizard::dolphin::test(self.tx, "Test the Created Package"),
+    Msg::DrawDolphinCompress => wizard::dolphin::compress(self.tx, "Compress the Created Package"),
     // Quit
     Msg::Quit =>
     {

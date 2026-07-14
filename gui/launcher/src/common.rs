@@ -24,6 +24,7 @@ pub enum Platform
   RETROARCH,
   PCSX2,
   RPCS3,
+  DOLPHIN,
 } // Platform
 
 // impl Platform {{{
@@ -38,6 +39,7 @@ impl Platform
       Platform::RETROARCH => "retroarch",
       Platform::PCSX2     => "pcsx2",
       Platform::RPCS3     => "rpcs3",
+      Platform::DOLPHIN   => "dolphin",
     } // match
   } // as_str
 
@@ -50,6 +52,7 @@ impl Platform
       "retroarch" => Ok(Platform::RETROARCH),
       "pcsx2"     => Ok(Platform::PCSX2),
       "rpcs3"     => Ok(Platform::RPCS3),
+      "dolphin"   => Ok(Platform::DOLPHIN),
       &_ => Err(ah!("Could not determine platform with string")),
     } // match
   } // as_str

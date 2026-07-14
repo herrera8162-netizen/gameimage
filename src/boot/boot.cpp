@@ -240,7 +240,7 @@ void boot_dolphin(ns_db::ns_project::Project& db_project, fs::path const& path_d
 {
   std::ignore = ns_subprocess::Subprocess(ns_env::get_or_throw("FIM_BINARY_DOLPHIN"))
     .with_piped_outputs()
-    .with_args("-b", "-e", path_dir_self / db_project.path_file_rom)
+    .with_args("-e", path_dir_self / db_project.path_file_rom)
     .spawn()
     .wait();
 } // boot_dolphin() }}}

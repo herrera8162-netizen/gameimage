@@ -193,8 +193,11 @@ pub fn project(tx: Sender<common::Msg>
     }
     else
     {
-      log_status!("No icon selected");
-      clone_tx.send_activate(msg_curr);
+      // Icon is optional - proceed without installing one rather than
+      // re-drawing this same screen (which looked like a hang: clicking
+      // Next with nothing selected did nothing observable).
+      log_status!("No icon selected, skipping");
+      clone_tx.send_activate(msg_next);
       return;
     };
 

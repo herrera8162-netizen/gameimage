@@ -49,6 +49,7 @@ enum class Platform
 	PCSX2,
 	RPCS3,
 	DOLPHIN,
+	MELONDS,
 }; // enum class Platform }}}
 
 // enum class Op {{{

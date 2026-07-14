@@ -15,6 +15,7 @@ pub enum Platform
   Pcsx2,
   Rcps3,
   Dolphin,
+  Melonds,
 } // }}}
 
 // impl Platform {{{
@@ -30,6 +31,7 @@ impl Platform
       Platform::Pcsx2     => "pcsx2",
       Platform::Rcps3     => "rpcs3",
       Platform::Dolphin   => "dolphin",
+      Platform::Melonds   => "melonds",
     } // match
   } // as_str
 
@@ -43,6 +45,7 @@ impl Platform
       "pcsx2"     => Some(Platform::Pcsx2),
       "rpcs3"     => Some(Platform::Rcps3),
       "dolphin"   => Some(Platform::Dolphin),
+      "melonds"   => Some(Platform::Melonds),
       _           => None,
     } // match
   } // as_str
@@ -99,6 +102,13 @@ pub enum Msg
   DrawDolphinRom,
   DrawDolphinTest,
   DrawDolphinCompress,
+
+  DrawMelondsName,
+  DrawMelondsIcon,
+  DrawMelondsRom,
+  DrawMelondsBios,
+  DrawMelondsTest,
+  DrawMelondsCompress,
 
   DrawFinish,
 

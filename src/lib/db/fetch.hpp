@@ -42,6 +42,7 @@ struct Pcsx2     : public Platform {};
 struct Rpcs3     : public Platform {};
 struct Wine      : public Platform {};
 struct Dolphin   : public Platform {};
+struct Melonds   : public Platform {};
 // platforms() }}}
 
 // class Fetch {{{
@@ -54,6 +55,7 @@ class Fetch
     std::unique_ptr<Rpcs3> m_rpcs3 = std::make_unique<Rpcs3>();
     std::unique_ptr<Wine> m_wine = std::make_unique<Wine>();
     std::unique_ptr<Dolphin> m_dolphin = std::make_unique<Dolphin>();
+    std::unique_ptr<Melonds> m_melonds = std::make_unique<Melonds>();
     std::string m_version;
     Fetch() = default;
   public:
@@ -67,6 +69,7 @@ class Fetch
         case ns_enum::Platform::RPCS3     : return std::make_unique<Platform>(*m_rpcs3);
         case ns_enum::Platform::WINE      : return std::make_unique<Platform>(*m_wine);
         case ns_enum::Platform::DOLPHIN   : return std::make_unique<Platform>(*m_dolphin);
+        case ns_enum::Platform::MELONDS   : return std::make_unique<Platform>(*m_melonds);
       } // switch
       throw std::runtime_error("Unknown platform");
     } // get_platform
@@ -90,6 +93,11 @@ inline std::expected<Fetch, std::string> read_impl(fs::path const& path_file_db)
     if (auto value = db.template value<std::string>("dolphin", "layer"))
     {
       fetch.m_dolphin->m_url_layer["default"] = *value;
+    } // if
+    // Melonds (tolerate absence: manifests predating melonds support lack this key)
+    if (auto value = db.template value<std::string>("melonds", "layer"))
+    {
+      fetch.m_melonds->m_url_layer["default"] = *value;
     } // if
     // Wine
     auto layers = ehope(db.value("wine", "layer"));

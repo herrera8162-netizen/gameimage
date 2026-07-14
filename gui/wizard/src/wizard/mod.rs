@@ -8,3 +8,4 @@ pub mod retroarch;
 pub mod pcsx2;
 pub mod rpcs3;
 pub mod dolphin;
+pub mod melonds;

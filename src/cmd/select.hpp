@@ -72,6 +72,15 @@ inline void by_op(ns_enum::Platform enum_platform
       "Only the rom option is available for dolphin"_throw_if([&]{ return op != Op::ROM; });
     } // case
     break;
+    case ns_enum::Platform::MELONDS:
+    {
+      // Bios is optional (melonDS supports direct-boot without it)
+      "Only rom and bios options are available for melonds"_throw_if([&]
+      {
+        return op != Op::ROM && op != Op::BIOS;
+      });
+    } // case
+    break;
   } // switch
 
   // Check if is regular file or directory

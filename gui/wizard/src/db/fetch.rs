@@ -26,9 +26,11 @@ pub struct Entry
   pub pcsx2: EntryEmulator,
   pub retroarch: EntryEmulator,
   pub wine: EntryWine,
-  // Tolerate manifests predating dolphin support, which lack this key
+  // Tolerate manifests predating dolphin/melonds support, which lack these keys
   #[serde(default)]
   pub dolphin: EntryEmulator,
+  #[serde(default)]
+  pub melonds: EntryEmulator,
 } // Entry }}}
 
 // read() {{{

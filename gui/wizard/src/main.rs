@@ -165,6 +165,13 @@ fn redraw(&mut self, msg : Msg)
     Msg::DrawDolphinRom => wizard::dolphin::rom(self.tx, "Install the Rom File(s)"),
     Msg::DrawDolphinTest => wizard::dolphin::test(self.tx, "Test the Created Package"),
     Msg::DrawDolphinCompress => wizard::dolphin::compress(self.tx, "Compress the Created Package"),
+    // Melonds
+    Msg::DrawMelondsName => wizard::melonds::name(self.tx, "Select the Application Name"),
+    Msg::DrawMelondsIcon => wizard::melonds::icon(self.tx, "Select the Application Icon"),
+    Msg::DrawMelondsRom => wizard::melonds::rom(self.tx, "Install the Rom File(s)"),
+    Msg::DrawMelondsBios => wizard::melonds::bios(self.tx, "Install the Bios/Firmware File(s) (optional)"),
+    Msg::DrawMelondsTest => wizard::melonds::test(self.tx, "Test the Created Package"),
+    Msg::DrawMelondsCompress => wizard::melonds::compress(self.tx, "Compress the Created Package"),
     // Quit
     Msg::Quit =>
     {

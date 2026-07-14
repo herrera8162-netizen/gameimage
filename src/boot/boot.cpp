@@ -245,6 +245,21 @@ void boot_dolphin(ns_db::ns_project::Project& db_project, fs::path const& path_d
     .wait();
 } // boot_dolphin() }}}
 
+// boot_melonds() {{{
+void boot_melonds(ns_db::ns_project::Project& db_project, fs::path const& path_dir_self)
+{
+  // Bios/firmware are optional for melonDS (it supports direct-boot without
+  // them), so only copy if the user installed any
+  db_files_copy(db_project, ns_enum::Op::BIOS, path_dir_self, (get_xdg_config_home() / "melonDS"));
+
+  // Start application
+  std::ignore = ns_subprocess::Subprocess(ns_env::get_or_throw("FIM_BINARY_MELONDS"))
+    .with_piped_outputs()
+    .with_args(path_dir_self / db_project.path_file_rom)
+    .spawn()
+    .wait();
+} // boot_melonds() }}}
+
 // boot_rpcs3() {{{
 void boot_rpcs3(ns_db::ns_project::Project& db_project, fs::path const& path_dir_self)
 {
@@ -298,6 +313,7 @@ void boot(int argc, char** argv)
     case ns_enum::Platform::PCSX2    : boot_pcsx2(*db_project, path_dir_self)     ; break;
     case ns_enum::Platform::RPCS3    : boot_rpcs3(*db_project, path_dir_self)     ; break;
     case ns_enum::Platform::DOLPHIN  : boot_dolphin(*db_project, path_dir_self)   ; break;
+    case ns_enum::Platform::MELONDS  : boot_melonds(*db_project, path_dir_self)   ; break;
   } // switch
 } // function: boot }}}
 

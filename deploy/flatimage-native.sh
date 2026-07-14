@@ -4,7 +4,13 @@
 # @description : Assemble gameimage.flatimage from already-built native
 #                 binaries (main/boot/wizard/launcher), skipping the Docker
 #                 build steps in flatimage-alpine.sh. Used on a dev VM where
-#                 those binaries were already built directly via cmake/cargo.
+#                 those binaries were already built directly via cmake/cargo
+#                 (glibc, not musl) - so this uses an Arch (glibc) FlatImage
+#                 base instead of Alpine (musl), matching what wizard/
+#                 launcher actually link against. gameimage-cli/gameimage-boot
+#                 are fully static either way (see src/CMakeLists.txt's
+#                 -static linker flag) so the base distro doesn't matter for
+#                 those two.
 ######################################################################
 
 set -e
@@ -38,6 +44,8 @@ function _fetch()
   chmod +x "$out"
 }
 
+# These are all statically-linked (libc-independent) tools, so they run fine
+# regardless of the base distro's libc
 _fetch "https://github.com/ruanformigoni/unionfs-fuse/releases/download/ebac73a/unionfs" "$BIN_DIR"/unionfs
 _fetch "https://github.com/ruanformigoni/fuse-overlayfs/releases/download/af507a2/fuse-overlayfs-x86_64" "$BIN_DIR"/overlayfs
 _fetch "https://github.com/mikefarah/yq/releases/download/v4.30.7/yq_linux_amd64.tar.gz" "$BIN_DIR/yq" "./yq_linux_amd64"
@@ -64,13 +72,26 @@ for i in "$BUILD_DIR"/app/bin/*; do
   chmod +x "$i"
 done
 
-export IMAGE="$BUILD_DIR"/alpine.flatimage
-wget -q --show-progress --progress=dot:mega -O"$IMAGE" "https://github.com/flatimage/flatimage/releases/latest/download/alpine-x86_64.flatimage"
+# Arch (glibc) base instead of Alpine (musl) - matches what wizard/launcher
+# actually need. Same base image container/build-arch.sh uses for the
+# runner/game layers.
+export IMAGE="$BUILD_DIR"/arch.flatimage
+wget -q --show-progress --progress=dot:mega -O"$IMAGE" "https://github.com/flatimage/flatimage/releases/download/v2.0.0/arch-x86_64.flatimage"
 chmod +x "$IMAGE"
 
 "$IMAGE" fim-perms add home,media,network,xorg,wayland,dbus_user,dev
 
-"$IMAGE" fim-root apk add wayland-libs-client wayland-libs-cursor pango glib cairo libgcc dbus-libs libxkbcommon libxinerama libxcursor font-noto xz tar libssl3
+"$IMAGE" fim-root pacman -Syu --noconfirm
+"$IMAGE" fim-root pacman -S --noconfirm wayland pango glib2 cairo libxkbcommon libxinerama libxcursor libxrender libxfixes libxft noto-fonts dbus openssl mesa
+
+# dbus installs a setuid-root helper unreadable by the unprivileged user that
+# later runs `fim-layer commit` - mkdwarfs (the layer compressor) exits
+# non-zero when it can't read a file during scanning (even though it just
+# substitutes an empty placeholder and continues), which flatimage's wrapper
+# then surfaces as a hard "Failed to commit layer" error. Dropping the setuid
+# bit avoids triggering that in the first place; this helper isn't needed for
+# the wizard/launcher's own dbus usage (session bus client only).
+"$IMAGE" fim-root chmod 644 /usr/lib/dbus-daemon-launch-helper
 
 "$IMAGE" fim-env set 'PATH=/opt/gameimage/bin:"$PATH"' 'GIMG_BACKEND="/opt/gameimage/bin/gameimage-cli"'
 
